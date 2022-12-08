@@ -69,9 +69,13 @@ def blackJack(money):
   playerMoney=money
   end=False
   
-  print(f'You have ${money})
-  bet = input('what do you bet? ')
-  playerMoney=money-bet
+  print(f'You have ${playerMoney}')
+  bet = int(input('what do you bet? '))
+  if bet > playerMoney:
+    print('you cant do that')
+    return(blackJack(playerMoney))
+  else:
+    playerMoney=money-bet
   
   #initial deal.
   for i in range(4):
@@ -86,12 +90,15 @@ def blackJack(money):
   while end == False:
     print(f'player has {playerHand} for {playerTotal}')
     print(f'dealer has {dealerHand[0]} for {handValues(dealerHand,dealerTotal,True)}')
-    if playerTotal == 21:
-      if dealerTotal != 21:
-        result='black jack!'
+    if dealerTotal == 21:
+      if playerTotal != 21:
+        result='you lose'
         end=True
       else:
         result='push'
+        end=True
+    elif playerTotal == 21:
+        result='black jack!'
         end=True
     elif playerTotal > 21:
       if dealerTotal <= 21:
@@ -108,14 +115,31 @@ def blackJack(money):
         playerTotal=0
         playerTotal= handValues(playerHand, playerTotal)
       if decision == 'n':
-        print(f'dealer has {dealerTotal}')
-        if playerTotal > dealerTotal:
+        print(f'dealer hand is {dealerHand} for {dealerTotal}')
+        while dealerTotal < 17:
+          hit(dealerHand)
+          dealerTotal=0
+          dealerTotal=handValues(dealerHand, dealerTotal)
+          print(f'dealer hand is {dealerHand} for {dealerTotal}')
+        print(f'dealer has {dealerTotal} you have {playerTotal}')
+        if playerTotal > dealerTotal or dealerTotal > 21:
           result='you win'
         elif playerTotal == dealerTotal:
           result='push'
         else:
           result='you lose'
         end=True
+  if result == 'black jack!':
+    playerMoney=playerMoney+bet*2.5
+  elif result == 'you win':
+    playerMoney=playerMoney+bet*2
+  elif result == "push":
+    playerMoney=playerMoney+bet
   print(result)
-  
+
+  if input('would you like to play again? ') == 'y':
+    blackJack(playerMoney)
+  else:
+    print(f'you finished with ${playerMoney}')  
+    return()
 blackJack(100)
