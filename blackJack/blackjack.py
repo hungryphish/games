@@ -48,10 +48,12 @@ def blackJack(money):
       deck.append((card,suit))
   random.shuffle(deck)
 
-  #function evaluates both hands, returns their value
+  #function evaluates a hand and returns its value
   def handValues(hand, handTotal, dealer=False):
     if dealer == False:
+      aces=0
       for card in hand:
+        #write code to make aces wild here.
         handTotal=cardValues.get(card[0])+handTotal
     else:
       handTotal=cardValues.get(hand[0][0])
@@ -70,7 +72,7 @@ def blackJack(money):
   end=False
   
   print(f'You have ${playerMoney}')
-  bet = int(input('what do you bet? '))
+  bet = int(input('what do you bet? $'))
   if bet > playerMoney:
     print('you cant do that')
     return(blackJack(playerMoney))
@@ -129,6 +131,7 @@ def blackJack(money):
         else:
           result='you lose'
         end=True
+
   if result == 'black jack!':
     playerMoney=playerMoney+bet*2.5
   elif result == 'you win':
@@ -137,9 +140,9 @@ def blackJack(money):
     playerMoney=playerMoney+bet
   print(result)
 
-  if input('would you like to play again? ') == 'y':
+  if input(f'You have ${playerMoney} would you like to play again? ') == 'y':
     blackJack(playerMoney)
   else:
-    print(f'you finished with ${playerMoney}')  
+    print(f'You finished with ${playerMoney}')  
     return()
 blackJack(100)
