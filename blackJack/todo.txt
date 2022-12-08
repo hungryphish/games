@@ -1,3 +1,5 @@
-make aces wild
-comment
-add multiple decks
+make aces wild x
+comment x
+add multiple decks x
+define the gampeplay loop better.
+let user add money if they run out.
