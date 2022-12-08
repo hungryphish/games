@@ -2,4 +2,6 @@ make aces wild x
 comment x
 add multiple decks x
 define the gampeplay loop better.
+  Make it so dealer and user pull from the same show until they go through half the decks.
+  Decks are then added to shoe and shoe is reshuffled.
 let user add money if they run out.
