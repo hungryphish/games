@@ -4,45 +4,35 @@ blackjack
 '''
 
 import random
-
+import itertools
 def blackJack(money):
   #creating a list of tuples containing all 52 cards in a deck.
-  face=['J','Q','K','A']
   suits=['Diamonds','Hearts','Clubs','Spades']
-  nums=[str(i) for i in range(2,11)]
-  cards=nums+face
+  cards=[str(i) for i in range(2,11)] + ['J','Q','K','A']
   values=[i for i in range(2,11)]+[10,10,10,11]
   cardValues=dict(zip(cards,values))
-  deck=[]
-  for card in cards:
-    for suit in suits:
-      deck.append((card,suit))
+  #itertools is same as a nested for loop
+  deck = list(itertools.product(cards, suits))
   #Fill the shoe with more decks. Default will be 5.
   deckQty=5
   deck=deck*deckQty
   #shuffle the shoe. all cards will be drawn from this shuffled shoe.
   random.shuffle(deck)
 
-
   #function evaluates a hand and returns its value. 
   #Dealer is a bool variable so that after the draw, the player only sees one card the dealer has.
   def handValues(hand, handTotal, dealer=False):
-    if dealer == False:
-      #Ace loop exists because aces can be either 1 or 11. Default value is 11 unless that makes the hand total over 21. Ace value is then 1.
-      aces=0
-      #for loop counts aces in hand. may or may not be used depending on hand total.
-      for card in hand:
-        if card[0] == 'A':
-          aces +=1
-        handTotal=cardValues.get(card[0])+handTotal
-        #both conditions necessary. We dont want aces to be worth 1 if the hand total is less than 21.
-        #we dont want to subtract from the hand total if there are no aces.
-      while handTotal > 21 and aces > 0:
-        for ace in range(1,aces+1):
-          handTotal-=10
-          aces-=1
-    #if this is for the initial dealer draw, will only return the value of first card as that is all player is allowed to know.
-    else:
+    #totals up all cards in hand by referencing the type of card and its value in the cardValues dictionary.
+    for card in hand:
+      handTotal += cardValues.get(card[0])
+    #Since aces can be 11 or 1 and we only want them to be 1 if we are over 21
+    #this evaluates if there are any aces and if we are bust.
+    #if so, subtract 10 so that the value of the ace is effectively 1.
+    for card in hand:
+      if card[0] == 'A' and handTotal > 21:
+        handTotal -=10
+    #This is so after the draw only one of the dealers cards is shown.
+    if dealer == True:
       handTotal=cardValues.get(hand[0][0])
     return(handTotal)
   
