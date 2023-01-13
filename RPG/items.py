@@ -5,13 +5,14 @@ class Armor:
     self.piece=piece
     self.AR=AR
 
+#add secondary damage and type
 class Weapon:
   itemType = 'weapon'
-  def __init__(self, name, damage, damageType, reach, modDamage=0, modDamageType='none'):
-    self.reach = reach
+  def __init__(self, name, baseAttack, attackType, hands, die, dieSides):
+    self.hands = hands
     self.name = name
-    #if statement is here to not display modifier damage if there is no suffix or aspect
-    if modDamage!=0:
-      self.damage = (damage, damageType),(modDamage,modDamageType)
-    else:
-      self.damage = (damage, damageType)
+    self.baseAttack = baseAttack
+    #maybe calculate this in the class as opposed to being fed it.
+    self.attackType = attackType
+    self.die = die
+    self.dieSide = dieSides

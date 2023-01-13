@@ -1,3 +1,4 @@
+import random
 from generators import generateArmorPiece
 
 #below function determies the total armor rating of all armor pieces
@@ -13,3 +14,9 @@ def getAllArmor():
     armorSlots=['helmet', 'cuirass', 'greaves', 'boots']
     armorPieces=[generateArmorPiece(slot) for slot in armorSlots]
     return(armorPieces)
+    
+def dieRoll(numOfDie, sidesOfDie):
+  result=0
+  for die in range(numOfDie):
+    result+=random.randint(1,sidesOfDie)
+  return(result)
