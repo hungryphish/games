@@ -35,18 +35,28 @@ class Archetypes:
     self.strength = strength
     self.luck = luck
 
+
+
+
 #everyone will be of class Character. Enemies and players will be different subclasses.
 #default species is human and default archetype is default
 class Character:
  
-  def __init__(self, name, species='Human',archetype='Default'):
+  def __init__(self, name, species, archetype):
     self.name=name
-    self.species=species
-    self.archetype=archetype
     #calling this function gives a character default stats.
+    self.archetype=archetype
+    for s in speciesList:
+      if s.name.upper() == species.upper():
+        self.species=s
+    for a in archetypesList:
+      if a.name.upper() == archetype.upper():
+        self.archetype=a
     self.getBaseStats()
     self.setWeapon()
     self.AR=[0,0,0]
+    self.block = [stat + self.agility for stat in self.AR]
+
 
   
   #Function will provide the base stats of a character based on it's species and archetype. Useful when creating 
@@ -88,21 +98,24 @@ class Character:
     self.attack = [stat + self.agility for stat in self.weapon.baseAttack]
     self.damageDice = self.weapon.damageDice
   
+
+
+  #below function determies the total armor rating of all armor pieces
+  def getTotalAR(armor):
+    totalAR=[0,0,0]
+    for piece in armor:
+      for index, stat in enumerate(piece.AR):
+        totalAR[index]+=totalAR[index]+stat
+    return(totalAR)
+  
   #add armor
   #Provides a default piece of armor with no AR
   def setArmor(self, armorPieces):
     self.armor=armorPieces
-    self.AR = self.getTotalAR(self.armor)
+    self.AR = Character.getTotalAR(self.armor)
     self.block = [stat + self.agility for stat in self.AR]
-
-  #below function determies the total armor rating of all armor pieces
-  def getTotalAR(self):
-    totalAR=[0,0,0]
-    for piece in self.armor:
-      for index, stat in enumerate(piece.AR):
-        totalAR[index]=totalAR[index]+stat
-    return(totalAR)
-  
+    
+    
 class Player(Character):
   #inventory is a dictionary, because each item will have a quantity given.
   def __init__(self, gold=100, level=1, xp=0, inventory={}):
@@ -151,6 +164,8 @@ darkElf = Species('Dark Elf',False,50,100,75,50,25)
 lizardPerson = Species('Lizard Person',False,75,50,100,25,50)
 mushroomPerson = Species('Mushroom Person',False,50,75,50,25,100)
 speciesList=[human,dwarf,elf,orc,ent,goblin,troll,darkElf,lizardPerson,mushroomPerson]
+speciesNames=['human', 'dwarf','elf','orc','ent','goblin','troll','dark Elf','lizard Person','mushroom Person']
+
 
 #Archetypes used that add to base stats. (Health, Majika, Agility, Strength, Luck)
 #initialize archetypes
@@ -162,6 +177,7 @@ thief = Archetypes('Thief',30,20,30,20,50)
 archer = Archetypes('Archer',30,10,70,15,25)
 default = Archetypes('Default',0,0,0,0,0)
 archetypesList=[knight,berserker,ranger,mage,thief,archer,default]
+archetypeNames=['Knight','Berserker','Ranger','Mage','Thief','Archer','Default']
 
 def generateSpecies():
     species = random.choice(speciesList)
@@ -171,9 +187,8 @@ def generateArchetype():
     archetype = random.choice(archetypesList)
     return(archetype)
   
-def generateCharacter(name, species, archetype):
+def generateCharacter(name, species=random.choice(speciesNames), archetype=random.choice(archetypeNames)):
+  print(species)
+  print(archetype)
   character = Character(name,species,archetype)
   return(character)
-
-buck = Character('Buck',human,knight)
-print(buck)

@@ -44,7 +44,7 @@ class Weapon:
     self.attackType = attackType
     self.damageDice = damageDice
 
-def generateWeapon(slot=None):
+def generateWeapon(type=None):
     #Determines if we are generating a truly random weapon, or just giving a type of weapon random attributes.
     if type == None:
         weapon = random.choice(list(possibleWeapons.keys()))
@@ -82,6 +82,7 @@ def generateWeapon(slot=None):
         
     weapon=Weapon(name, baseAttack,attackType, hands, damageDice)
     return(weapon)
+
 
 def generateArmorPiece(slot=None):
     #determines if function is generating any piece or a certain type.
@@ -121,6 +122,4 @@ def generateArmorPiece(slot=None):
 def getAllArmor():
     armorPieces=[generateArmorPiece(slot) for slot in armorSlots]
     return(armorPieces)
-
-x=getAllArmor()
 

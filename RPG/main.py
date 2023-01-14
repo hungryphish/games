@@ -1,44 +1,33 @@
 import random
+import os
 import actions
 import characters
-import generators
 import items
 import utilities
 
 
 
 
+buck = characters.Character('Buck','Human', 'Knight')
+buck.setWeapon(items.generateWeapon())
+print(buck.AR)
+buck.setArmor(items.getAllArmor())
+# print(buck.AR)
+print(buck.weapon.name)
+
+print([x.AR for x in buck.armor])
+print(buck.AR)
+rando = characters.generateCharacter('Rando')
+
+def battle(attacker, defender):
+    while attacker.health > 0 and defender.health > 0:
+        actions.attackRound(attacker,defender)
+        if attacker.health > 0 and defender.health > 0:
+            actions.attackRound(defender,attacker)
+    if attacker.health > 0:
+        print(f'{attacker.name} is victorious')
+    else:
+        print(f'{defender.name} is victorious')
 
 
-
-buck=characters.Character('buck','Human','Knight')
-goblin = characters.Character('goblin','Goblin')
-sparrow = characters.Character('Sparrow','Lizard Person','Mage')
-
-b=generators.generateWeapon()
-buck.setWeapon(b)
-print(f'bucks weapon attacks for {b.baseAttack}')
-sparrow.setWeapon(items.Weapon('Sharp Stick',[10,0,0],'pierce',2,2,6))
-print(f'buck has a {b.name}')
-print(f'sparrow has a sharp stick')
-buck.setArmor(utilities.getAllArmor())
-for piece in buck.armor:
-    print(piece.name)
-print(f'Bucks armor is {buck.AR}')
-sparrow.setArmor(utilities.getAllArmor())
-for piece in sparrow.armor:
-    print(piece.name)
-print(f'Sparrows armor is {sparrow.AR}')
-
-# actions.attack(buck, goblin)
-
-while sparrow.health > 0 and buck.health >0:
-  print('Sparrow attacks')
-  actions.attackRound(sparrow, buck)
-  print('Buck attacks')
-  actions.attackRound(buck, sparrow)
-
-if sparrow.health==0:
-    print('sparrow died')
-else:
-    print('buck died')
+battle(buck,rando)
