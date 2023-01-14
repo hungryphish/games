@@ -2,9 +2,6 @@ import random
 import utilities
 import items
 
-'''
-utilities is causing the strip to run twice
-'''
 
 #Stats used throughout game.
 #Health will be modified by armor
@@ -25,6 +22,7 @@ class Species:
     self.agility = agility
     self.strength = strength
     self.luck = luck
+
 
     
 class Archetypes:
@@ -48,7 +46,7 @@ class Character:
     #calling this function gives a character default stats.
     self.getBaseStats()
     self.setWeapon()
-    # self.setArmor()
+    self.AR=[0,0,0]
 
   
   #Function will provide the base stats of a character based on it's species and archetype. Useful when creating 
@@ -92,10 +90,18 @@ class Character:
   
   #add armor
   #Provides a default piece of armor with no AR
-  # def setArmor(self, armorPieces=[items.Armor('None','None',[0,0,0])]):
-  #   self.armor=armorPieces
-  #   self.AR = utilities.getTotalAR(self.armor)
-  #   self.block = [stat + self.agility for stat in self.AR]
+  def setArmor(self, armorPieces):
+    self.armor=armorPieces
+    self.AR = self.getTotalAR(self.armor)
+    self.block = [stat + self.agility for stat in self.AR]
+
+  #below function determies the total armor rating of all armor pieces
+  def getTotalAR(self):
+    totalAR=[0,0,0]
+    for piece in self.armor:
+      for index, stat in enumerate(piece.AR):
+        totalAR[index]=totalAR[index]+stat
+    return(totalAR)
   
 class Player(Character):
   #inventory is a dictionary, because each item will have a quantity given.
@@ -157,5 +163,17 @@ archer = Archetypes('Archer',30,10,70,15,25)
 default = Archetypes('Default',0,0,0,0,0)
 archetypesList=[knight,berserker,ranger,mage,thief,archer,default]
 
+def generateSpecies():
+    species = random.choice(speciesList)
+    return(species)
+
+def generateArchetype():
+    archetype = random.choice(archetypesList)
+    return(archetype)
+  
+def generateCharacter(name, species, archetype):
+  character = Character(name,species,archetype)
+  return(character)
+
 buck = Character('Buck',human,knight)
-print(buck.health)
+print(buck)
