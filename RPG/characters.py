@@ -2,6 +2,9 @@ import random
 import utilities
 import items
 
+'''
+utilities is causing the strip to run twice
+'''
 
 #Stats used throughout game.
 #Health will be modified by armor
@@ -11,28 +14,28 @@ import items
 #Luck determines dodge success, hit success, and loot
 stats=['Health','Majika','Agility','Strength','Luck']
 #Different species used throught the game. (Player Race?, Health, Majika, Agility, Strength, Luck)
-allSpecies={
-  'Human':(True,75,25,50,50,100),
-  'Dwarf':(True,75,25,50,100,50),
-  'Elf':(True,50,75,100,50,25),
-  'Orc':(True,75,50,50,100,25),
-  'Ent':(True,100,75,25,50,50),
-  'Goblin':(False,50,25,50,100,75),
-  'Troll':(False,100,25,50,75,50),
-  'Dark Elf':(False,50,100,75,50,25),
-  'Lizard Person':(False,75,50,100,25,50),
-  'Mushroom Person':(False,50,75,50,25,100)
-  }
-#Archetypes used that add to base stats. (Health, Majika, Agility, Strength, Luck)
-archetypes={
-  'Knight':(60,5,15,60,10),
-  'Berserker':(40,10,10,60,30),
-  'Ranger':(30,30,50,20,20),
-  'Mage':(20,100,15,5,10),
-  'Thief':(30,20,30,20,50),
-  'Archer':(30,10,70,15,25),
-  'Default':(0,0,0,0,0)
-}
+
+class Species:
+  
+  def __init__(self, name, PC, health, majika, agility, strength, luck):
+    self.name = name
+    self.PC = PC
+    self.health = health
+    self.majika = majika
+    self.agility = agility
+    self.strength = strength
+    self.luck = luck
+
+    
+class Archetypes:
+  
+  def __init__(self, name, health, majika, agility, strength, luck):
+    self.name = name
+    self.health = health
+    self.majika = majika
+    self.agility = agility
+    self.strength = strength
+    self.luck = luck
 
 #everyone will be of class Character. Enemies and players will be different subclasses.
 #default species is human and default archetype is default
@@ -44,14 +47,17 @@ class Character:
     self.archetype=archetype
     #calling this function gives a character default stats.
     self.getBaseStats()
+    self.setWeapon()
+    # self.setArmor()
+
   
-  #Function will provide the base stats of a character based on it's species and archetype. Useful when creating characters.
+  #Function will provide the base stats of a character based on it's species and archetype. Useful when creating 
   def getBaseStats(self):
-    self.health=allSpecies[self.species][1]+archetypes[self.archetype][0]
-    self.majika=allSpecies[self.species][2]+archetypes[self.archetype][1]
-    self.agility=allSpecies[self.species][3]+archetypes[self.archetype][2]
-    self.strength=allSpecies[self.species][4]+archetypes[self.archetype][3]
-    self.luck=allSpecies[self.species][5]+archetypes[self.archetype][4]
+    self.health=self.species.health + self.archetype.health
+    self.majika=self.species.majika + self.archetype.majika
+    self.agility=self.species.agility + self.archetype.agility
+    self.strength=self.species.strength + self.archetype.strength
+    self.luck=self.species.luck + self.archetype.luck
 
   #Change each stat individually. For example, when taking dmg, health stat is changed.
   def changeStat(self, stat, amount):
@@ -78,11 +84,78 @@ class Character:
   
   #add a weapon
   #Provides a default weapon
-  def setWeapon(self, weapon=items.Weapon('Stick',[0,0,1],'blunt',1,1,6)):
-    self.weapon=weapon
+  def setWeapon(self, weapon=items.Weapon('Stick',[0,0,1],'blunt',1,(1,6))):
+    self.weapon = weapon
+    #add agility modifier to attack
+    self.attack = [stat + self.agility for stat in self.weapon.baseAttack]
+    self.damageDice = self.weapon.damageDice
   
   #add armor
   #Provides a default piece of armor with no AR
-  def setArmor(self, armorPieces=[items.Armor('None','None',[0,0,0])]):
-    self.armor=armorPieces
-    self.AR = utilities.getTotalAR(self.armor)
+  # def setArmor(self, armorPieces=[items.Armor('None','None',[0,0,0])]):
+  #   self.armor=armorPieces
+  #   self.AR = utilities.getTotalAR(self.armor)
+  #   self.block = [stat + self.agility for stat in self.AR]
+  
+class Player(Character):
+  #inventory is a dictionary, because each item will have a quantity given.
+  def __init__(self, gold=100, level=1, xp=0, inventory={}):
+    self.gold = gold
+    self.level = level
+    self.xp = xp
+    self.inventory = inventory
+    
+  def changeGold(self, gold):
+    self.gold+=gold
+  
+  def changeXP(self, xp):
+    self.xp+=xp
+  
+  def changeLevel(self, level):
+    self.level+=level
+    
+  def addItem(self, item, qty):
+    if item in self.inventory:
+      self.inventory[item] += qty
+    else:
+      self.inventory[item] = qty
+    
+  def removeItem(self, item, qty):
+    self.inventory[item] -= qty
+    if self.inventory[item] <= 0:
+      del self.inventory[item]
+
+  def equipWeapon(self, weapon):
+    self.addItem(self.weapon,1)
+    self.setWeapon(weapon)
+    self.removeItem(weapon, 1)
+    
+#add armor. Probably means implementing slots.
+
+
+#initialize species
+human = Species('Human',True,75,25,50,50,100)
+dwarf = Species('Dwarf',True,75,25,50,100,50)
+elf = Species('Elf',True,50,75,100,50,25)
+orc = Species('Orc',True,75,50,50,100,25)
+ent = Species('Ent',True,100,75,25,50,50)
+goblin = Species('Goblin',False,50,25,50,100,75)
+troll = Species('Troll',False,100,25,50,75,50)
+darkElf = Species('Dark Elf',False,50,100,75,50,25)
+lizardPerson = Species('Lizard Person',False,75,50,100,25,50)
+mushroomPerson = Species('Mushroom Person',False,50,75,50,25,100)
+speciesList=[human,dwarf,elf,orc,ent,goblin,troll,darkElf,lizardPerson,mushroomPerson]
+
+#Archetypes used that add to base stats. (Health, Majika, Agility, Strength, Luck)
+#initialize archetypes
+knight = Archetypes('Knight',60,5,15,60,10)
+berserker = Archetypes('Berserker',40,10,10,60,30)
+ranger = Archetypes('Ranger',30,30,50,20,20)
+mage = Archetypes('Mage',20,100,15,5,10)
+thief = Archetypes('Thief',30,20,30,20,50)
+archer = Archetypes('Archer',30,10,70,15,25)
+default = Archetypes('Default',0,0,0,0,0)
+archetypesList=[knight,berserker,ranger,mage,thief,archer,default]
+
+buck = Character('Buck',human,knight)
+print(buck.health)

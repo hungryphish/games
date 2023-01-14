@@ -5,6 +5,12 @@ import generators
 import items
 import utilities
 
+
+
+
+
+
+
 buck=characters.Character('buck','Human','Knight')
 goblin = characters.Character('goblin','Goblin')
 sparrow = characters.Character('Sparrow','Lizard Person','Mage')
@@ -15,7 +21,6 @@ print(f'bucks weapon attacks for {b.baseAttack}')
 sparrow.setWeapon(items.Weapon('Sharp Stick',[10,0,0],'pierce',2,2,6))
 print(f'buck has a {b.name}')
 print(f'sparrow has a sharp stick')
-goblin.setWeapon()
 buck.setArmor(utilities.getAllArmor())
 for piece in buck.armor:
     print(piece.name)
@@ -24,15 +29,14 @@ sparrow.setArmor(utilities.getAllArmor())
 for piece in sparrow.armor:
     print(piece.name)
 print(f'Sparrows armor is {sparrow.AR}')
-goblin.setArmor()
 
 # actions.attack(buck, goblin)
 
 while sparrow.health > 0 and buck.health >0:
   print('Sparrow attacks')
-  actions.attack(sparrow, buck)
+  actions.attackRound(sparrow, buck)
   print('Buck attacks')
-  actions.attack(buck, sparrow)
+  actions.attackRound(buck, sparrow)
 
 if sparrow.health==0:
     print('sparrow died')
