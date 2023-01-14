@@ -5,8 +5,16 @@ import characters
 import items
 import utilities
 
-
-
+'''
+To Do:
+Implement loot
+Implement XP gain
+Implement Levels
+Add potions
+Add store
+Add character creation
+add inventory mgmt
+'''
 
 buck = characters.Character('Buck','Human', 'Knight')
 buck.setWeapon(items.generateWeapon())
