@@ -11,27 +11,32 @@ To Do:
 Implement loot
 Implement XP gain
 Implement Levels
-Add potions
+Add more potions
 Add store
 Character creation can be expanded on to include stats.
 add inventory mgmt
 add different attacks
+should I create a super class for weapons, armor and potions?
 '''
 #Below will take the user to the character creation screen.
-playerCharacter=actions.characterCreation()
-print(playerCharacter.name)
-print(playerCharacter.species.name)
-print(playerCharacter.archetype.name)
+# playerCharacter=actions.characterCreation()
+# print(playerCharacter.name)
+# print(playerCharacter.species.name)
+# print(playerCharacter.archetype.name)
 
 
-# buck = characters.Character('Buck','bird person', 'mage')
+buck = characters.Character('Buck','bird person', 'mage')
+print(buck.health)
+buck.changeStat(items.healthPotion.stat,items.healthPotion.amount)
+print(buck.health)
 # buck.setWeapon(items.generateWeapon())
-# buck.setArmor(items.getAllArmor())
 # print(buck.weapon.name)
-# sparrow = characters.Character('Sparrow','bird person','mage')
-# sparrow.setArmor(items.getAllArmor())
-# sparrow.setWeapon(items.generateWeapon())
-# print(sparrow.weapon.name)
+# # buck.setArmor(items.getAllArmor())
+# # print(buck.weapon.name)
+# # sparrow = characters.Character('Sparrow','bird person','mage')
+# # sparrow.setArmor(items.getAllArmor())
+# # sparrow.setWeapon(items.generateWeapon())
+# # print(sparrow.weapon.name)
 # rando = characters.generateCharacter('Rando')
 
 # def battle(attacker, defender):

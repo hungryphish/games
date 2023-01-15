@@ -22,9 +22,8 @@ materials = {'leather':(0,1,0), 'scale':(1,1,0),'plate':(2,2,1)}
 #each piece gives a base bonus to block each damage type
 armorPieces= {'helmet':('head',1),'cuirass':('chest',2),'greaves':('legs',1),'boots':('feet',1)}
 
-# choices=[piece for piece in armorPieces if armorPieces[piece][0] == 'legs']
-# piece = random.choice(choices)
-# print(piece)
+
+
 
 class Armor:
   itemType='armor'
@@ -32,7 +31,6 @@ class Armor:
     self.name=name
     self.slot=slot
     self.AR=AR
-
 
 class Weapon:
   itemType = 'weapon'
@@ -43,6 +41,13 @@ class Weapon:
     #maybe calculate this in the class as opposed to being fed it.
     self.attackType = attackType
     self.damageDice = damageDice
+
+class Potion:
+    def __init__(self, name, stat, amount):
+        self.name = name
+        self.stat = stat
+        self.amount = amount
+healthPotion = Potion('Health Potion', 'health', 20)
 
 def generateWeapon(type=None):
     #Determines if we are generating a truly random weapon, or just giving a type of weapon random attributes.

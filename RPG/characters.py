@@ -144,7 +144,7 @@ class Player(Character):
     if self.inventory[item] <= 0:
       del self.inventory[item]
 
-  def equipWeapon(self, weapon):
+  def swapWeapons(self, weapon):
     self.addItem(self.weapon,1)
     self.setWeapon(weapon)
     self.removeItem(weapon, 1)
