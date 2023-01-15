@@ -163,9 +163,9 @@ troll = Species('Troll',False,100,25,50,75,50)
 darkElf = Species('Dark Elf',False,50,100,75,50,25)
 lizardPerson = Species('Lizard Person',False,75,50,100,25,50)
 mushroomPerson = Species('Mushroom Person',False,50,75,50,25,100)
-speciesList=[human,dwarf,elf,orc,ent,goblin,troll,darkElf,lizardPerson,mushroomPerson]
-speciesNames=['human', 'dwarf','elf','orc','ent','goblin','troll','dark Elf','lizard Person','mushroom Person']
-
+birdPerson = Species('Bird Person',True,50,25,100,50,75)
+speciesList=[human,dwarf,elf,orc,ent,goblin,troll,darkElf,lizardPerson,mushroomPerson,birdPerson]
+speciesNames=[species.name for species in speciesList]
 
 #Archetypes used that add to base stats. (Health, Majika, Agility, Strength, Luck)
 #initialize archetypes
@@ -177,7 +177,7 @@ thief = Archetypes('Thief',30,20,30,20,50)
 archer = Archetypes('Archer',30,10,70,15,25)
 default = Archetypes('Default',0,0,0,0,0)
 archetypesList=[knight,berserker,ranger,mage,thief,archer,default]
-archetypeNames=['Knight','Berserker','Ranger','Mage','Thief','Archer','Default']
+archetypeNames=[archetype.name for archetype in archetypesList]
 
 def generateSpecies():
     species = random.choice(speciesList)
@@ -188,7 +188,5 @@ def generateArchetype():
     return(archetype)
   
 def generateCharacter(name, species=random.choice(speciesNames), archetype=random.choice(archetypeNames)):
-  print(species)
-  print(archetype)
   character = Character(name,species,archetype)
   return(character)
