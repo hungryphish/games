@@ -53,7 +53,7 @@ def characterCreation():
     if possibleAs.count(affirmation.upper()) < 1:
       continue
     else:
-      playerCharacter = characters.Character(name, species.lower(), archetype.lower())
+      playerCharacter = characters.Player(name, species.lower(), archetype.lower())
       return(playerCharacter)
 
 #def shop():

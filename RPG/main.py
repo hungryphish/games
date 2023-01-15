@@ -16,19 +16,22 @@ Add store
 Character creation can be expanded on to include stats.
 add inventory mgmt
 add different attacks
-should I create a super class for weapons, armor and potions?
+Balance game
 '''
 #Below will take the user to the character creation screen.
-# playerCharacter=actions.characterCreation()
-# print(playerCharacter.name)
-# print(playerCharacter.species.name)
-# print(playerCharacter.archetype.name)
+playerCharacter=actions.characterCreation()
+print(playerCharacter.name)
+print(playerCharacter.species.name)
+print(playerCharacter.archetype.name)
+print(playerCharacter.health)
+print(playerCharacter.attack)
+print(playerCharacter.block)
 
 
-buck = characters.Character('Buck','bird person', 'mage')
-print(buck.health)
-buck.changeStat(items.healthPotion.stat,items.healthPotion.amount)
-print(buck.health)
+# buck = characters.Character('Buck','bird person', 'mage')
+# print(buck.health)
+# buck.changeStat(items.healthPotion.stat,items.healthPotion.amount)
+# print(buck.health)
 # buck.setWeapon(items.generateWeapon())
 # print(buck.weapon.name)
 # # buck.setArmor(items.getAllArmor())

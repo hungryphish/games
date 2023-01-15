@@ -22,32 +22,36 @@ materials = {'leather':(0,1,0), 'scale':(1,1,0),'plate':(2,2,1)}
 #each piece gives a base bonus to block each damage type
 armorPieces= {'helmet':('head',1),'cuirass':('chest',2),'greaves':('legs',1),'boots':('feet',1)}
 
+potions = {}
 
 
+class Item:
+    def __init__(self, name, cost=0):
+        self.name=name
+        self.cost=cost
 
-class Armor:
-  itemType='armor'
-  def __init__(self, name, slot, AR):
-    self.name=name
-    self.slot=slot
-    self.AR=AR
+class Armor(Item):
+    itemType='armor'
+    def __init__(self, name, slot, AR, cost=0):
+        super().__init__(name, cost)
+        self.slot=slot
+        self.AR=AR
 
-class Weapon:
+class Weapon(Item):
   itemType = 'weapon'
-  def __init__(self, name, baseAttack, attackType, hands, damageDice):
-    self.hands = hands
-    self.name = name
-    self.baseAttack = baseAttack
-    #maybe calculate this in the class as opposed to being fed it.
-    self.attackType = attackType
-    self.damageDice = damageDice
+  def __init__(self, name, baseAttack, attackType, hands, damageDice, cost=0):
+        super().__init__(name, cost)
+        self.hands = hands
+        self.baseAttack = baseAttack
+        #maybe calculate this in the class as opposed to being fed it.
+        self.attackType = attackType
+        self.damageDice = damageDice
 
-class Potion:
-    def __init__(self, name, stat, amount):
-        self.name = name
+class Potion(Item):
+    def __init__(self, name, stat, amount, cost=0):
+        super().__init__(name, cost)        
         self.stat = stat
         self.amount = amount
-healthPotion = Potion('Health Potion', 'health', 20)
 
 def generateWeapon(type=None):
     #Determines if we are generating a truly random weapon, or just giving a type of weapon random attributes.

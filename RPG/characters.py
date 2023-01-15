@@ -98,8 +98,6 @@ class Character:
     self.attack = [stat + self.agility for stat in self.weapon.baseAttack]
     self.damageDice = self.weapon.damageDice
   
-
-
   #below function determies the total armor rating of all armor pieces
   def getTotalAR(armor):
     totalAR=[0,0,0]
@@ -118,7 +116,8 @@ class Character:
     
 class Player(Character):
   #inventory is a dictionary, because each item will have a quantity given.
-  def __init__(self, gold=100, level=1, xp=0, inventory={}):
+  def __init__(self, name, species, archetype, gold=100, level=1, xp=0, inventory={}):
+    super().__init__(name, species, archetype)
     self.gold = gold
     self.level = level
     self.xp = xp
@@ -153,39 +152,67 @@ class Player(Character):
 
 
 #initialize species
-human = Species('Human',True,75,25,50,50,100)
-dwarf = Species('Dwarf',True,75,25,50,100,50)
-elf = Species('Elf',True,50,75,100,50,25)
-orc = Species('Orc',True,75,50,50,100,25)
-ent = Species('Ent',True,100,75,25,50,50)
-goblin = Species('Goblin',False,50,25,50,100,75)
-troll = Species('Troll',False,100,25,50,75,50)
-darkElf = Species('Dark Elf',False,50,100,75,50,25)
-lizardPerson = Species('Lizard Person',False,75,50,100,25,50)
-mushroomPerson = Species('Mushroom Person',False,50,75,50,25,100)
-birdPerson = Species('Bird Person',True,50,25,100,50,75)
-speciesList=[human,dwarf,elf,orc,ent,goblin,troll,darkElf,lizardPerson,mushroomPerson,birdPerson]
-speciesNames=[species.name for species in speciesList]
-
-#Archetypes used that add to base stats. (Health, Majika, Agility, Strength, Luck)
+speciesDict={
+'Human':(True,75,25,50,50,100),
+'Dwarf':(True,75,25,50,100,50),
+'Elf':(True,50,75,100,50,25),
+'Orc':(True,75,50,50,100,25),
+'Ent':(True,100,75,25,50,50),
+'Goblin':(False,50,25,50,100,75),
+'Troll':(False,100,25,50,75,50),
+'Dark Elf':(False,50,100,75,50,25),
+'Lizard Person':(False,75,50,100,25,50),
+'Mushroom Person':(False,50,75,50,25,100),
+'Bird Person':(True,50,25,100,50,75)
+}
+speciesList=[Species(x,
+#PC
+speciesDict[x][0],
+#Health
+speciesDict[x][1],
+#Majika
+speciesDict[x][2],
+#Agility
+speciesDict[x][3],
+#Strength
+speciesDict[x][4],
+#Luck
+speciesDict[x][5]) 
+for x in speciesDict]
+speciesNames=[specie.name for specie in speciesList]
+#Archetypes: used that add to base stats. (Health, Majika, Agility, Strength, Luck)
 #initialize archetypes
-knight = Archetypes('Knight',60,5,15,60,10)
-berserker = Archetypes('Berserker',40,10,10,60,30)
-ranger = Archetypes('Ranger',30,30,50,20,20)
-mage = Archetypes('Mage',20,100,15,5,10)
-thief = Archetypes('Thief',30,20,30,20,50)
-archer = Archetypes('Archer',30,10,70,15,25)
-default = Archetypes('Default',0,0,0,0,0)
-archetypesList=[knight,berserker,ranger,mage,thief,archer,default]
+archetypesDict={
+'Knight':(60,5,15,60,10),
+'Berserker':(40,10,10,60,30),
+'Ranger':(30,30,50,20,20),
+'Mage':(20,100,15,5,10),
+'Thief':(30,20,30,20,50),
+'Archer':(30,10,70,15,25),
+'Default':(0,0,0,0,0)
+}
+archetypesList=[Archetypes(x, 
+#Health
+archetypesDict[x][0],
+#Majika
+archetypesDict[x][1],
+#Ability
+archetypesDict[x][2],
+#Strength
+archetypesDict[x][3],
+#Luck
+archetypesDict[x][4]) 
+for x in archetypesDict]
 archetypeNames=[archetype.name for archetype in archetypesList]
 
+
 def generateSpecies():
-    species = random.choice(speciesList)
-    return(species)
+  species = random.choice(speciesList)
+  return(species)
 
 def generateArchetype():
-    archetype = random.choice(archetypesList)
-    return(archetype)
+  archetype = random.choice(archetypesList)
+  return(archetype)
   
 def generateCharacter(name, species=random.choice(speciesNames), archetype=random.choice(archetypeNames)):
   character = Character(name,species,archetype)
