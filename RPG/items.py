@@ -22,7 +22,7 @@ materials = {'leather':(0,1,0), 'scale':(1,1,0),'plate':(2,2,1)}
 #each piece gives a base bonus to block each damage type
 armorPieces= {'helmet':('head',1),'cuirass':('chest',2),'greaves':('legs',1),'boots':('feet',1)}
 
-potions = {}
+
 
 
 class Item:
@@ -132,3 +132,17 @@ def getAllArmor():
     armorPieces=[generateArmorPiece(slot) for slot in armorSlots]
     return(armorPieces)
 
+potions = {
+    'Health Potion': ('health', 20,100),
+    'Majik Elixer':('majika',20,100),
+    'Whet Stone':('attack', 20, 100), 
+    'Armor Polish': ('block',20,100)
+    }
+potionList=[
+    Potion(
+    potion,
+    potions[potion][0],
+    potions[potion][1],
+    potions[potion][2]
+    ) for potion in potions]
+potionNames=[potion.name for potion in potionList]
