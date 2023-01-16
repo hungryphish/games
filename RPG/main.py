@@ -11,31 +11,31 @@ To Do:
 Implement loot
 Implement XP gain
 Implement Levels
-Add more potions
-Add store
+Sell portion of the store needs work, currently broken.
+Also need to display and choose inventory better.
 Character creation can be expanded on to include stats.
 add inventory mgmt
 add different attacks
 Balance game
 '''
 #Below will take the user to the character creation screen.
-playerCharacter=actions.characterCreation()
-print(playerCharacter.name)
-print(playerCharacter.species.name)
-print(playerCharacter.archetype.name)
-print(playerCharacter.health)
-print(playerCharacter.attack)
-print(playerCharacter.block)
+# playerCharacter=actions.characterCreation()
+# print(playerCharacter.name)
+# print(playerCharacter.species.name)
+# print(playerCharacter.archetype.name)
+# print(playerCharacter.health)
+# print(playerCharacter.attack)
+# print(playerCharacter.block)
 
 
-# buck = characters.Character('Buck','bird person', 'mage')
-# print(buck.health)
-# buck.changeStat(items.healthPotion.stat,items.healthPotion.amount)
-# print(buck.health)
-# buck.setWeapon(items.generateWeapon())
-# print(buck.weapon.name)
-# # buck.setArmor(items.getAllArmor())
-# # print(buck.weapon.name)
+buck = characters.Player('Buck','bird person', 'mage')
+buck.setWeapon(items.generateWeapon())
+print(buck.weapon.name)
+buck.setArmor(items.getAllArmor())
+print(buck.weapon.name)
+buck.changeGold(1000)
+
+actions.shop(buck)
 # # sparrow = characters.Character('Sparrow','bird person','mage')
 # # sparrow.setArmor(items.getAllArmor())
 # # sparrow.setWeapon(items.generateWeapon())
