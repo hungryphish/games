@@ -57,6 +57,8 @@ def characterCreation():
       return(playerCharacter)
 
 def shop(player):
+    print('Welcome to the shop.')
+    
     while True:
       #I want to be sure the shop always has health potions and majika potions available so we find those items fromt he pre-created list
       healthPotion = [p for p in items.potionList if p.name.upper() == 'health potion'.upper()]
@@ -76,76 +78,75 @@ def shop(player):
       shopKeep=characters.Player('Larry','orc','mage',5000,900,0,shopInventory)
 
       def pcPurchase():
-        print('I have:')
-        print([x.name for x in shopKeep.inventory])
-        itemName = input('What would you like to buy? ')
-        try:
-          for i in shopKeep.inventory:
-            if i.name.upper() == itemName.upper():
-              item=i
-              print(f'My {itemName}?')
-              #add in an affirming dialog tree
-        except:
-          shopChoice()
-        if player.gold - item.cost < 0:
-          print('You dont have the money.')
-          shopChoice()
-        else:
-          player.changeGold(-item.cost)
-          shopKeep.removeItem(item, 1)
-          player.addItem(item, 1)
-          print(f'You bought the {item.name}')
-          shopChoice()
-
-      def pcSell():
-        #Test if player has anything to sell. Exit if they dont.
-        if len(player.inventory) < 1:
-          print('You have nothing to sell.')
-          shopChoice()
-        else:
-          #Display items
-          print('You have:')
-          #convert the item names to a list which is ordered and wont change.
-          inventoryList=list(player.inventory.keys())
+        while True:
+          print('I have:')
+          inventoryList=list(shopKeep.inventory.keys())
           # print in a readable manner.
           for index, item in enumerate(inventoryList):
             print(f"{index + 1}. {item.name}")
           #Test to ensure player has a valid selciton.
           try:
-            item= input("What would you like to sell? ")
-            item=inventoryList[int(item)-1]
-            print(f'Your {item.name}?')
+            item = input("What would you like to buy? ")
+            item = inventoryList[int(item)-1]
+            print(f'My {item.name}?')
                   #add in an affirming dialog tree
+            if player.gold - item.cost < 0:
+              print('You dont have the money.')
+              break
+            else:
+              player.changeGold(-item.cost)
+              shopKeep.removeItem(item, 1)
+              player.addItem(item, 1)
+              print(f'You bought the {item.name}')
+              break
           except:
-            shopChoice()
-          if shopKeep.gold - item.cost < 0:
-            print('I dont have the money')
-            shopChoice()
-          else:
-            shopKeep.changeGold(item.cost)
-            player.removeItem(item, 1)
-            shopKeep.addItem(item, 1)
-            print(f'You sold the {item.name}')
-            shopChoice()
+            print('Doesnt sound right.')
+            break
 
-      def shopChoice():
+      def pcSell():
         while True:
-          print('Would you like to \n1. buy \n2. sell or \n3. exit?')
-          decision=input('')
-          if decision.upper() == '1' or 'buy'.upper():
-            pcPurchase()
-          elif decision.upper() == '2' or 'sell'.upper():
-            pcSell()
-          #add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-          elif decision.upper() == '3' or 'exit'.upper():
+          #Test if player has anything to sell. Exit if they dont.
+          if len(player.inventory) < 1:
+            print('You have nothing to sell.')
             break
           else:
-            print('Speak up lad!')
-            shopChoice()
+            #Display items
+            print('You have:')
+            #convert the item names to a list which is ordered and wont change.
+            inventoryList=list(player.inventory.keys())
+            # print in a readable manner.
+            for index, item in enumerate(inventoryList):
+              print(f"{index + 1}. {item.name}")
+            #Test to ensure player has a valid selciton.
+            try:
+              item= input("What would you like to sell? ")
+              item=inventoryList[int(item)-1]
+              print(f'Your {item.name}?')
+                    #add in an affirming dialog tree
+              if shopKeep.gold - item.cost < 0:
+                print('I dont have the money')
+              else:
+                shopKeep.changeGold(item.cost)
+                player.removeItem(item, 1)
+                shopKeep.addItem(item, 1)
+                print(f'You sold the {item.name}')
+              break
+            except:
+              print('Doesnt sound right.')
+              break
 
-      print('Welcome to the shop.')
-      shopChoice()
-      break
+      print('Would you like to \n1. buy \n2. sell or \n3. exit?')
+      decision=input('')
+      if decision == '1' or decision.upper() == 'buy'.upper():
+        pcPurchase()
+      elif decision == '2' or decision.upper() == 'sell'.upper():
+        pcSell()
+      #add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
+      elif decision == '3' or decision.upper() == 'exit'.upper():
+        break
+      else:
+        print('Speak up lad!')
+        continue
 
 def attackRound(attacker, defender):
   '''#We first determine if the atttacker is lucky, if so, they get a bonus to their attack roll.
