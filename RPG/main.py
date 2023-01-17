@@ -1,5 +1,4 @@
-import random
-import os
+
 import actions
 import characters
 import items
@@ -17,6 +16,9 @@ Character creation can be expanded on to include stats.
 add inventory mgmt
 add different attacks
 Balance game
+save feature
+add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
+shop loop needs debugging
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()

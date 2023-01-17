@@ -57,27 +57,25 @@ def characterCreation():
       return(playerCharacter)
 
 def shop(player):
-  #I want to be sure the shop always has health potions and majika potions available so we find those items fromt he pre-created list
-  healthPotion = [p for p in items.potionList if p.name.upper() == 'health potion'.upper()]
-  majikElixir = [p for p in items.potionList if p.name.upper() == 'Majik Elixer'.upper()]
-  #we use 0 index because the variable is a list and we just want one variable.
-  shopInventory = {healthPotion[0]: 5, majikElixir[0]: 5}
-  #well get various random items. and then add them to the inventory
-  weapons=[items.generateWeapon() for i in range(3)]
-  armor=[items.generateArmorPiece() for i in range(3)]
-  potions = [random.choice(items.potionList) for i in range(3)]
-  randomItems=[weapons+armor+potions]
-  #have to go to j because we iterate through a list of lists to get items.
-  for i in randomItems:
-    for j in i:
-      shopInventory[j]=1
-  #shop will actually be a character since we can use the existing inventory variable and remove item functions in that class.
-  shopKeep=characters.Player('Larry','orc','mage',5000,900,0,shopInventory)
+    while True:
+      #I want to be sure the shop always has health potions and majika potions available so we find those items fromt he pre-created list
+      healthPotion = [p for p in items.potionList if p.name.upper() == 'health potion'.upper()]
+      majikElixir = [p for p in items.potionList if p.name.upper() == 'Majik Elixer'.upper()]
+      #we use 0 index because the variable is a list and we just want one variable.
+      shopInventory = {healthPotion[0]: 5, majikElixir[0]: 5}
+      #well get various random items. and then add them to the inventory
+      weapons=[items.generateWeapon() for i in range(3)]
+      armor=[items.generateArmorPiece() for i in range(3)]
+      potions = [random.choice(items.potionList) for i in range(3)]
+      randomItems=[weapons+armor+potions]
+      #have to go to j because we iterate through a list of lists to get items.
+      for i in randomItems:
+        for j in i:
+          shopInventory[j]=1
+      #shop will actually be a character since we can use the existing inventory variable and remove item functions in that class.
+      shopKeep=characters.Player('Larry','orc','mage',5000,900,0,shopInventory)
 
-  while True:
-    
-    def pcPurchase():
-      while True:
+      def pcPurchase():
         print('I have:')
         print([x.name for x in shopKeep.inventory])
         itemName = input('What would you like to buy? ')
@@ -85,69 +83,69 @@ def shop(player):
           for i in shopKeep.inventory:
             if i.name.upper() == itemName.upper():
               item=i
-              print(f'Oh, my {itemName}?')
+              print(f'My {itemName}?')
               #add in an affirming dialog tree
         except:
-          exit=input('Try again again or exit? ')
-          if exit.upper() == exit.upper():
-            break
-          continue
+          shopChoice()
         if player.gold - item.cost < 0:
           print('You dont have the money.')
-          exit=input('Try again again or exit? ')
-          if exit.upper() == exit.upper():
-            break
-          continue
+          shopChoice()
         else:
           player.changeGold(-item.cost)
           shopKeep.removeItem(item, 1)
           player.addItem(item, 1)
           print(f'You bought the {item.name}')
-          exit=input('Buy again again or exit? ')
-          if exit.upper() == exit.upper():
-            break
-          continue
+          shopChoice()
 
-    def pcSell():
-      while True:
-        #Got to be a better way of selecting what you want to sell.
-        print('You have:')
-        print([x.name for x in player.inventory])
-        itemName=input('What would you like to sell? ')
-        try:
-          for i in player.inventory:
-            if i.name.upper() == itemName.upper():
-              item=i
-              print(f'ah your {itemName}')
-              #add in an affirming dialog tree
-        except:
-          exit=input('try again or exit? ')
-          if exit.upper() == exit.upper():
-            break
-          continue
-        if shopKeep.gold - item.cost < 0:
-          print('I dont have the money')
-          continue
+      def pcSell():
+        #Test if player has anything to sell. Exit if they dont.
+        if len(player.inventory) < 1:
+          print('You have nothing to sell.')
+          shopChoice()
         else:
-          shopKeep.changeGold(item.cost)
-        player.removeItem(item, 1)
-        shopKeep.addItem(item, 1)
-        print(f'You sold the {item.name}')
-        exit=input('Sell again or exit? ')
-        if exit.upper() == exit.upper():
-          break
-        continue
+          #Display items
+          print('You have:')
+          #convert the item names to a list which is ordered and wont change.
+          inventoryList=list(player.inventory.keys())
+          # print in a readable manner.
+          for index, item in enumerate(inventoryList):
+            print(f"{index + 1}. {item.name}")
+          #Test to ensure player has a valid selciton.
+          try:
+            item= input("What would you like to sell? ")
+            item=inventoryList[int(item)-1]
+            print(f'Your {item.name}?')
+                  #add in an affirming dialog tree
+          except:
+            shopChoice()
+          if shopKeep.gold - item.cost < 0:
+            print('I dont have the money')
+            shopChoice()
+          else:
+            shopKeep.changeGold(item.cost)
+            player.removeItem(item, 1)
+            shopKeep.addItem(item, 1)
+            print(f'You sold the {item.name}')
+            shopChoice()
 
-    print('Welcome to the shop!')
-    decision=input('Would you like to sell or buy or exit? ')
-    if decision.upper() == 'sell'.upper():
-      pcSell()
-    elif decision.upper() == 'buy'.upper():
-      pcPurchase()
-    elif decision.upper() == 'exit'.upper():
+      def shopChoice():
+        while True:
+          print('Would you like to \n1. buy \n2. sell or \n3. exit?')
+          decision=input('')
+          if decision.upper() == '1' or 'buy'.upper():
+            pcPurchase()
+          elif decision.upper() == '2' or 'sell'.upper():
+            pcSell()
+          #add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
+          elif decision.upper() == '3' or 'exit'.upper():
+            break
+          else:
+            print('Speak up lad!')
+            shopChoice()
+
+      print('Welcome to the shop.')
+      shopChoice()
       break
-    else:
-      print('Speak up lad!')
 
 def attackRound(attacker, defender):
   '''#We first determine if the atttacker is lucky, if so, they get a bonus to their attack roll.
