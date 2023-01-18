@@ -76,6 +76,7 @@ def shop(player):
           shopInventory[j]=1
       #shop will actually be a character since we can use the existing inventory variable and remove item functions in that class.
       shopKeep=characters.Player('Larry','orc','mage',5000,900,0,shopInventory)
+      affirmitives=['1', 'YES']
 
       def pcPurchase():
         while True:
@@ -89,16 +90,16 @@ def shop(player):
             item = input("What would you like to buy? ")
             item = inventoryList[int(item)-1]
             print(f'My {item.name}?')
-                  #add in an affirming dialog tree
-            if player.gold - item.cost < 0:
-              print('You dont have the money.')
-              break
-            else:
-              player.changeGold(-item.cost)
-              shopKeep.removeItem(item, 1)
-              player.addItem(item, 1)
-              print(f'You bought the {item.name}')
-              break
+            validate=input('1. Yes\n2. No: ')
+            if validate.upper() in affirmitives:
+              if player.gold - item.cost < 0:
+                print('You dont have the money.')
+              else:
+                player.changeGold(-item.cost)
+                shopKeep.removeItem(item, 1)
+                player.addItem(item, 1)
+                print(f'You bought the {item.name}')
+            break
           except:
             print('Doesnt sound right.')
             break
@@ -122,20 +123,21 @@ def shop(player):
               item= input("What would you like to sell? ")
               item=inventoryList[int(item)-1]
               print(f'Your {item.name}?')
-                    #add in an affirming dialog tree
-              if shopKeep.gold - item.cost < 0:
-                print('I dont have the money')
-              else:
-                shopKeep.changeGold(item.cost)
-                player.removeItem(item, 1)
-                shopKeep.addItem(item, 1)
-                print(f'You sold the {item.name}')
+              validate=input('1. Yes\n2. No: ')
+              if validate.upper() in affirmitives:
+                if shopKeep.gold - item.cost < 0:
+                  print('I dont have the money')
+                else:
+                  shopKeep.changeGold(item.cost)
+                  player.removeItem(item, 1)
+                  shopKeep.addItem(item, 1)
+                  print(f'You sold the {item.name}')
               break
             except:
               print('Doesnt sound right.')
               break
 
-      print('Would you like to \n1. buy \n2. sell or \n3. exit?')
+      print('Would you like to: \n1. Buy \n2. Sell \n3. Exit')
       decision=input('')
       if decision == '1' or decision.upper() == 'buy'.upper():
         pcPurchase()
