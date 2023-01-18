@@ -2,6 +2,7 @@ import random
 import characters
 import utilities
 import items
+from characters import Character
 
 def characterCreation():
   
@@ -84,13 +85,13 @@ def shop(player):
           inventoryList=list(shopKeep.inventory.keys())
           # print in a readable manner.
           for index, item in enumerate(inventoryList):
-            print(f"{index + 1}. {item.name}")
+            print(f"{index + 1}. {item.cost}gp  {item.name}")
           #Test to ensure player has a valid selciton.
           try:
-            item = input("What would you like to buy? ")
+            item = input("What would you like to buy?\n")
             item = inventoryList[int(item)-1]
-            print(f'My {item.name}?')
-            validate=input('1. Yes\n2. No: ')
+            print(f'A {item.name} for {item.cost}gp?')
+            validate=input('1. Yes\n2. No\n')
             if validate.upper() in affirmitives:
               if player.gold - item.cost < 0:
                 print('You dont have the money.')
@@ -98,7 +99,7 @@ def shop(player):
                 player.changeGold(-item.cost)
                 shopKeep.removeItem(item, 1)
                 player.addItem(item, 1)
-                print(f'You bought the {item.name}')
+                print(f'You bought the {item.name} for {item.cost}gp')
             break
           except:
             print('Doesnt sound right.')
@@ -114,29 +115,37 @@ def shop(player):
             #Display items
             print('You have:')
             #convert the item names to a list which is ordered and wont change.
+
+
+            # playerWeapon=player.weapon
+            # player.swapWeapons()
+            # playerArmor=player.armor
             inventoryList=list(player.inventory.keys())
             # print in a readable manner.
             for index, item in enumerate(inventoryList):
-              print(f"{index + 1}. {item.name}")
+              print(f"{index + 1}. {item.cost}gp  {item.name}")
             #Test to ensure player has a valid selciton.
             try:
-              item= input("What would you like to sell? ")
+              print(f'I have {shopKeep.gold}gp.')
+              item= input("What would you like to sell?\n")
               item=inventoryList[int(item)-1]
-              print(f'Your {item.name}?')
-              validate=input('1. Yes\n2. No: ')
+              print(f'Your {item.name} for {item.cost}gp?')
+              validate=input('1. Yes\n2. No\n')
               if validate.upper() in affirmitives:
                 if shopKeep.gold - item.cost < 0:
-                  print('I dont have the money')
+                  print('I dont have the money.')
                 else:
                   shopKeep.changeGold(item.cost)
                   player.removeItem(item, 1)
                   shopKeep.addItem(item, 1)
-                  print(f'You sold the {item.name}')
+                  print(f'You sold the {item.name} for {item.cost}gp.')
+              # if playerWeapon in inventoryList:
+              #   Character.player.swapWeapons(playerWeapon)
               break
             except:
               print('Doesnt sound right.')
               break
-
+      print(f'You have {player.gold}gp.')
       print('Would you like to: \n1. Buy \n2. Sell \n3. Exit')
       decision=input('')
       if decision == '1' or decision.upper() == 'buy'.upper():

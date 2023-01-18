@@ -10,15 +10,13 @@ To Do:
 Implement loot
 Implement XP gain
 Implement Levels
-Sell portion of the store needs work, currently broken.
-Also need to display and choose inventory better.
 Character creation can be expanded on to include stats.
 add inventory mgmt
-add different attacks
+add different attacks1
 Balance game
 save feature
 add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-shop loop needs debugging
+Should de-equip armor and weapon so that a player can sell them.
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()
