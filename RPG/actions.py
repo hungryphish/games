@@ -107,6 +107,9 @@ def shop(player):
 
       def pcSell():
         while True:
+          #Unequip weapon when going into store.
+          playerWeapon=player.weapon
+          player.unequipWeapon()
           #Test if player has anything to sell. Exit if they dont.
           if len(player.inventory) < 1:
             print('You have nothing to sell.')
@@ -116,10 +119,6 @@ def shop(player):
             print('You have:')
             #convert the item names to a list which is ordered and wont change.
 
-
-            # playerWeapon=player.weapon
-            # player.swapWeapons()
-            # playerArmor=player.armor
             inventoryList=list(player.inventory.keys())
             # print in a readable manner.
             for index, item in enumerate(inventoryList):
@@ -139,8 +138,9 @@ def shop(player):
                   player.removeItem(item, 1)
                   shopKeep.addItem(item, 1)
                   print(f'You sold the {item.name} for {item.cost}gp.')
-              # if playerWeapon in inventoryList:
-              #   Character.player.swapWeapons(playerWeapon)
+                  #If the player didn't sell their weapon, we want to auto-equip it.
+                  if item.name != playerWeapon.name:
+                    player.setWeapon(playerWeapon)
               break
             except:
               print('Doesnt sound right.')

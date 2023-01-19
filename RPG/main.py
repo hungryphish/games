@@ -11,12 +11,13 @@ Implement loot
 Implement XP gain
 Implement Levels
 Character creation can be expanded on to include stats.
+redo stat system. Maybe just make it DND?
 add inventory mgmt
 add different attacks1
 Balance game
 save feature
 add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-Should de-equip armor and weapon so that a player can sell them.
+Should de-equip armor so that a player can sell them.
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()
@@ -30,9 +31,13 @@ Should de-equip armor and weapon so that a player can sell them.
 
 buck = characters.Player('Buck','bird person', 'mage')
 buck.setWeapon(items.generateWeapon())
-print(buck.weapon.name)
+# print(buck.weapon.name)
+# print([x for x in buck.inventory])
+# buck.unequipWeapon()
+# print('weapon swap')
+# print([x for x in buck.inventory])
 buck.setArmor(items.getAllArmor())
-print(buck.weapon.name)
+
 buck.changeGold(1000)
 
 actions.shop(buck)

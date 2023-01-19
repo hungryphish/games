@@ -143,10 +143,14 @@ class Player(Character):
     if self.inventory[item] <= 0:
       del self.inventory[item]
 
-  def swapWeapons(self, weapon=None):
+  def swapWeapons(self, weapon):
     self.addItem(self.weapon,1)
     self.setWeapon(weapon)
     self.removeItem(weapon, 1)
+
+  def unequipWeapon(self):
+    self.addItem(self.weapon,1)
+    self.setWeapon(items.Weapon('Stick',[0,0,1],'blunt',1,(1,6)))
     
 #add armor. Probably means implementing slots.
 
