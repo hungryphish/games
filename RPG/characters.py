@@ -153,16 +153,23 @@ class Player(Character):
     self.setWeapon(items.Weapon('Stick',[0,0,1],'blunt',1,(1,6)))
     
   def unequipArmor(self, armorPiece=None):
+    #default setting. Will unequip all armor.
     if armorPiece == None:
       for piece in self.armor:
+        #add the items to your inventory
         self.addItem(piece, 1)
+      #resets the armor. Although, this may not be needed?
       self.setArmor([items.Armor('None','head',[0,0,0])])
     else:
       self.addItem(armorPiece, 1)
+      #may not be needed. Item may remove itself because it is an object. Further testing required
       self.armor = [piece for piece in self.armor if piece != armorPiece]
+      #get new stats
       self.setArmor(self.armor)
   
   def equipArmor(self, armorPiece):
+
+    #bool to test if the slot is already occupied by another piece of armor.
     occ=False
     for piece in self.armor:
       if piece.slot == armorPiece.slot:
@@ -174,13 +181,10 @@ class Player(Character):
       #necessary to update AR and block stats.
     self.setArmor(self.armor)
     try:
+      #may not be necessary. There to take item out of inv. But I may have already done that???
       self.removeItem(armorPiece)
     except:
       pass
-      
-
-
-
 #initialize species
 speciesDict={
 'Human':(True,75,25,50,50,100),

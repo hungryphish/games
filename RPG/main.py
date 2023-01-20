@@ -16,7 +16,7 @@ add different attacks1
 Balance game
 save feature
 add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-Should de-equip armor so that a player can sell them.
+Sell shouldn't show stick for weapon or None for armor.
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()
