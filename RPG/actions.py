@@ -110,6 +110,8 @@ def shop(player):
           #Unequip weapon when going into store.
           playerWeapon=player.weapon
           player.unequipWeapon()
+          playerArmor=player.armor
+          player.unequipArmor()
           #Test if player has anything to sell. Exit if they dont.
           if len(player.inventory) < 1:
             print('You have nothing to sell.')
@@ -141,6 +143,12 @@ def shop(player):
                   #If the player didn't sell their weapon, we want to auto-equip it.
                   if item.name != playerWeapon.name:
                     player.setWeapon(playerWeapon)
+                  elif item in playerArmor:
+                    player.armor=[piece for piece in playerArmor if piece != item]
+                  else:
+                    for piece in playerArmor:
+                      player.equipArmor(piece)
+
               break
             except:
               print('Doesnt sound right.')
