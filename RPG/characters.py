@@ -132,13 +132,13 @@ class Player(Character):
   def changeLevel(self, level):
     self.level+=level
     
-  def addItem(self, item, qty):
+  def addItem(self, item, qty=1):
     if item in self.inventory:
       self.inventory[item] += qty
     else:
       self.inventory[item] = qty
     
-  def removeItem(self, item, qty):
+  def removeItem(self, item, qty=1):
     self.inventory[item] -= qty
     if self.inventory[item] <= 0:
       del self.inventory[item]
@@ -152,7 +152,33 @@ class Player(Character):
     self.addItem(self.weapon,1)
     self.setWeapon(items.Weapon('Stick',[0,0,1],'blunt',1,(1,6)))
     
-#add armor. Probably means implementing slots.
+  def unequipArmor(self, armorPiece=None):
+    if armorPiece == None:
+      for piece in self.armor:
+        self.addItem(piece, 1)
+      self.setArmor([items.Armor('None','head',[0,0,0])])
+    else:
+      self.addItem(armorPiece, 1)
+      self.armor = [piece for piece in self.armor if piece != armorPiece]
+      self.setArmor(self.armor)
+  
+  def equipArmor(self, armorPiece):
+    occ=False
+    for piece in self.armor:
+      if piece.slot == armorPiece.slot:
+        occ=True
+        self.unequipArmor(piece)
+        self.armor.append(armorPiece)
+    if occ == False:
+      self.armor.append(armorPiece)
+      #necessary to update AR and block stats.
+    self.setArmor(self.armor)
+    try:
+      self.removeItem(armorPiece)
+    except:
+      pass
+      
+
 
 
 #initialize species

@@ -30,17 +30,28 @@ Should de-equip armor so that a player can sell them.
 
 
 buck = characters.Player('Buck','bird person', 'mage')
-buck.setWeapon(items.generateWeapon())
+# buck.setWeapon(items.generateWeapon())
 # print(buck.weapon.name)
 # print([x for x in buck.inventory])
 # buck.unequipWeapon()
 # print('weapon swap')
 # print([x for x in buck.inventory])
 buck.setArmor(items.getAllArmor())
+piece=items.generateArmorPiece()
+
+# buck.unequipArmor()
+print(f'bucks inventory is\n{[x.name for x in buck.inventory]}')
+buck.addItem(piece)
+print(f'inventory is now \n{[x.name for x in buck.inventory]}')
+print(f'armor is {[x.name for x in buck.armor]}')
+print(f'equipping {piece.name}')
+buck.equipArmor(piece)
+print(f'inventory is now \n{[x.name for x in buck.inventory]}')
+print(f'armor is {[x.name for x in buck.armor]}')
 
 buck.changeGold(1000)
 
-actions.shop(buck)
+# actions.shop(buck)
 # # sparrow = characters.Character('Sparrow','bird person','mage')
 # # sparrow.setArmor(items.getAllArmor())
 # # sparrow.setWeapon(items.generateWeapon())
