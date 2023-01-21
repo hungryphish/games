@@ -102,8 +102,12 @@ class Character:
   def getTotalAR(armor):
     totalAR=[0,0,0]
     for piece in armor:
-      for index, stat in enumerate(piece.AR):
-        totalAR[index]+=totalAR[index]+stat
+      #this is here so that if nothing is in armor, than it will return AR of 0
+      try:
+        for index, stat in enumerate(piece.AR):
+          totalAR[index]+=totalAR[index]+stat
+      except:
+        pass
     return(totalAR)
   
   #add armor
@@ -157,18 +161,14 @@ class Player(Character):
     if armorPiece == None:
       for piece in self.armor:
         #add the items to your inventory
-        self.addItem(piece, 1)
-      #resets the armor. Although, this may not be needed?
-      self.setArmor([items.Armor('None','head',[0,0,0])])
+        self.addItem(piece)
+        self.armor=[]
     else:
-      self.addItem(armorPiece, 1)
-      #may not be needed. Item may remove itself because it is an object. Further testing required
-      self.armor = [piece for piece in self.armor if piece != armorPiece]
-      #get new stats
-      self.setArmor(self.armor)
+      self.addItem(armorPiece)
+      self.armor=[piece for piece in self.armor if piece != armorPiece]
+    self.setArmor(self.armor)
   
   def equipArmor(self, armorPiece):
-
     #bool to test if the slot is already occupied by another piece of armor.
     occ=False
     for piece in self.armor:
@@ -178,13 +178,11 @@ class Player(Character):
         self.armor.append(armorPiece)
     if occ == False:
       self.armor.append(armorPiece)
-      #necessary to update AR and block stats.
+    #necessary to update AR and block stats.
     self.setArmor(self.armor)
-    try:
-      #may not be necessary. There to take item out of inv. But I may have already done that???
-      self.removeItem(armorPiece)
-    except:
-      pass
+    #There to take item out of inv.
+    self.removeItem(armorPiece)
+    
 #initialize species
 speciesDict={
 'Human':(True,75,25,50,50,100),
