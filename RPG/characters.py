@@ -92,7 +92,7 @@ class Character:
   
   #add a weapon
   #Provides a default weapon
-  def setWeapon(self, weapon=items.Weapon('Stick',[0,0,1],'blunt',1,(1,6))):
+  def setWeapon(self, weapon=items.Weapon('fist',[0,0,1],'blunt',1,(1,6))):
     self.weapon = weapon
     #add agility modifier to attack
     self.attack = [stat + self.agility for stat in self.weapon.baseAttack]
@@ -137,10 +137,12 @@ class Player(Character):
     self.level+=level
     
   def addItem(self, item, qty=1):
-    if item in self.inventory:
-      self.inventory[item] += qty
-    else:
-      self.inventory[item] = qty
+    #ignore default fist weapon so that it doesnt appear in inventory.
+    if item.name != 'fist':
+      if item in self.inventory:
+        self.inventory[item] += qty
+      else:
+        self.inventory[item] = qty
     
   def removeItem(self, item, qty=1):
     self.inventory[item] -= qty
@@ -154,7 +156,7 @@ class Player(Character):
 
   def unequipWeapon(self):
     self.addItem(self.weapon,1)
-    self.setWeapon(items.Weapon('Stick',[0,0,1],'blunt',1,(1,6)))
+    self.setWeapon()
     
   def unequipArmor(self, armorPiece=None):
     #default setting. Will unequip all armor.
@@ -182,7 +184,7 @@ class Player(Character):
     self.setArmor(self.armor)
     #There to take item out of inv.
     self.removeItem(armorPiece)
-    
+
 #initialize species
 speciesDict={
 'Human':(True,75,25,50,50,100),
