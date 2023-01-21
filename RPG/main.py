@@ -15,8 +15,6 @@ add inventory mgmt
 add different attacks1
 Balance game
 save feature
-add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-Sell shouldn't show stick for weapon or None for armor.
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()
@@ -28,34 +26,14 @@ Sell shouldn't show stick for weapon or None for armor.
 # print(playerCharacter.block)
 
 
-buck = characters.Player('Buck','bird person', 'mage')
-buck.setWeapon(items.generateWeapon())
-print(buck.weapon.name)
-# print([x for x in buck.inventory])
-# buck.unequipWeapon()
-# print('weapon swap')
-# print([x for x in buck.inventory])
-buck.setArmor(items.getAllArmor())
-piece=items.generateArmorPiece()
+# buck = characters.Player('Buck','bird person', 'mage')
+# buck.setWeapon(items.generateWeapon())
+# buck.setArmor(items.getAllArmor())
+# piece=items.generateArmorPiece()
 
-# buck.unequipArmor()
-# print(f'bucks inventory is\n{[x.name for x in buck.inventory]}')
-# buck.addItem(piece)
-# print(f'inventory is now \n{[x.name for x in buck.inventory]}')
-# print(f'armor is {[x.name for x in buck.armor]}')
-# print(f'equipping {piece.name}')
-# buck.equipArmor(piece)
-# print(f'inventory is now \n{[x.name for x in buck.inventory]}')
-# print(f'armor is {[x.name for x in buck.armor]}')
-# buck.unequipArmor(piece)
-# print(f'inventory is now \n{[x.name for x in buck.inventory]}')
-# print(f'armor is {[x.name for x in buck.armor]}')
-# print(buck.AR)
-# print(buck.block)
+# buck.changeGold(1000)
 
-buck.changeGold(1000)
-
-actions.shop(buck)
+# actions.shop(buck)
 # # sparrow = characters.Character('Sparrow','bird person','mage')
 # # sparrow.setArmor(items.getAllArmor())
 # # sparrow.setWeapon(items.generateWeapon())
@@ -88,3 +66,5 @@ actions.shop(buck)
 #     ls.append(battle(buck,sparrow))
 # print(ls)
 
+pc = actions.characterCreation()
+actions.lobby(pc)

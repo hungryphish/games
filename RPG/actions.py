@@ -57,6 +57,18 @@ def characterCreation():
       playerCharacter = characters.Player(name, species.lower(), archetype.lower())
       return(playerCharacter)
 
+def lobby(player):
+  while True:
+    print('What would you like to do?')
+    choice=input('1. Shop\n 2. Fight\n')
+    if choice.upper() == '1' or choice == 'shop'.upper():
+      shop(player)
+    elif choice.upper() == '2' or choice == 'fight'.upper():
+      attackRound(player, characters.generateCharacter('Rando1'))
+    else:
+      print('Say again?')
+      continue
+    
 def shop(player):
     print('Welcome to the shop.')
     
@@ -108,10 +120,16 @@ def shop(player):
       def pcSell():
         while True:
           #Unequip weapon when going into store.
-          playerWeapon=player.weapon
-          player.unequipWeapon()
-          playerArmor=player.armor
-          player.unequipArmor()
+          try:
+            playerWeapon=player.weapon
+            player.unequipWeapon()
+          except:
+            pass
+          try:
+            playerArmor=player.armor
+            player.unequipArmor()
+          except:
+              pass
           #Test if player has anything to sell. Exit if they dont.
           if len(player.inventory) < 1:
             print('You have nothing to sell.')
@@ -160,7 +178,6 @@ def shop(player):
         pcPurchase()
       elif decision == '2' or decision.upper() == 'sell'.upper():
         pcSell()
-      #add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
       elif decision == '3' or decision.upper() == 'exit'.upper():
         break
       else:
