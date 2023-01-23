@@ -15,6 +15,7 @@ add inventory mgmt
 add different attacks1
 Balance game
 save feature
+show stats for characters
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()

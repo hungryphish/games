@@ -184,6 +184,19 @@ def shop(player):
         print('Speak up lad!')
         continue
 
+
+#Battle
+#Pick attack.
+#Add bonuses to users attack.
+#Deplete majika.
+#See if attack hits.
+#if so, add any bonuses to damage.
+#subtract from targets health
+
+# def battle(attacker, )
+
+
+
 def attackRound(attacker, defender):
   '''#We first determine if the atttacker is lucky, if so, they get a bonus to their attack roll.
   total attack is then determined.
