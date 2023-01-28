@@ -193,7 +193,17 @@ def shop(player):
 #if so, add any bonuses to damage.
 #subtract from targets health
 
-# def battle(attacker, )
+def battle(player, enemy=characters.generateCharacter(name="Enemy")):
+  while player.health > 0 or enemy.health > 0:
+    #roll initiative to see who goes first
+    pInt= player.agility+utilities.dieRoll(1,20)
+    eInt= enemy.agility+utilities.dieRoll(1,20)
+    if pInt > eInt:
+      attackRound(player,enemy)
+    else:
+      attackRound(enemy,player)
+    break
+  return
 
 
 
