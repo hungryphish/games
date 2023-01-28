@@ -30,6 +30,7 @@ show stats for characters
 # buck = characters.Player('Buck','bird person', 'mage')
 # buck.setWeapon(items.generateWeapon())
 # buck.setArmor(items.getAllArmor())
+# actions.battle(buck)
 # piece=items.generateArmorPiece()
 
 # buck.changeGold(1000)
@@ -63,6 +64,8 @@ show stats for characters
 
 # #below is just for testing
 # ls=[]
+
+
 # for n in range(50):
 #     ls.append(battle(buck,sparrow))
 # print(ls)
