@@ -64,7 +64,7 @@ def lobby(player):
     if choice.upper() == '1' or choice == 'shop'.upper():
       shop(player)
     elif choice.upper() == '2' or choice == 'fight'.upper():
-      attackRound(player, characters.generateCharacter('Rando1'))
+      battle(player)
     else:
       print('Say again?')
       continue
@@ -194,15 +194,19 @@ def shop(player):
 #subtract from targets health
 
 def battle(player, enemy=characters.generateCharacter(name="Enemy")):
-  while player.health > 0 or enemy.health > 0:
-    #roll initiative to see who goes first
-    pInt= player.agility+utilities.dieRoll(1,20)
-    eInt= enemy.agility+utilities.dieRoll(1,20)
+  #roll initiative to see who goes first
+  pInt= player.agility+utilities.dieRoll(1,20)
+  eInt= enemy.agility+utilities.dieRoll(1,20)
+  while player.health > 0 and enemy.health > 0:
     if pInt > eInt:
-      attackRound(player,enemy)
+        #If PC is the attacker, then they choose what they want to do. Drink potion, basic attack or other attack.
+      preAttack(player)
+      attackRound(player, enemy)
+      attackRound(enemy, player)
     else:
       attackRound(enemy,player)
-    break
+      preAttack(player)
+      attackRound(player,enemy)
   return
 
 
@@ -250,6 +254,24 @@ def attackRound(attacker, defender):
   else:
     print('miss')
 
+def preAttack(player):
+  while True:
+    choice = input("Do you \n1. Attack\n2. Drink Potion\n")
+    if choice== "2":
+      PCPotions = [item for item in player.inventory if item.itemType=="potion"]
+      print("Which potion?")
+      for index, potion in enumerate(PCPotions):
+        print(f"{index+1}. {potion.name}\n")
+      choice = input().upper()
+      #use a try statement for validation of player choice as opposed to a series of if statements.
+      try:
+        player.consume(PCPotions[int(choice)-1])
+        break
+      except:
+        print("Not a valid choice")
+        continue
+    break
+          
 #def modifyCharacter():
 
 #def die():

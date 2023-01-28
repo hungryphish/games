@@ -149,6 +149,11 @@ class Player(Character):
     if self.inventory[item] <= 0:
       del self.inventory[item]
 
+  #like when using a potion.
+  def consume(self, item):
+    self.changeStat(item.stat,item.amount)
+    self.removeItem(item)
+
   def swapWeapons(self, weapon):
     self.addItem(self.weapon,1)
     self.setWeapon(weapon)
@@ -184,6 +189,7 @@ class Player(Character):
     self.setArmor(self.armor)
     #There to take item out of inv.
     self.removeItem(armorPiece)
+
 
 #initialize species
 speciesDict={

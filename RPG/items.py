@@ -48,6 +48,7 @@ class Weapon(Item):
         self.damageDice = damageDice
 
 class Potion(Item):
+    itemType='potion'
     def __init__(self, name, stat, amount, cost=0):
         super().__init__(name, cost)        
         self.stat = stat
