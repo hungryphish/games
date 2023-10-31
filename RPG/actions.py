@@ -2,6 +2,7 @@ import random
 import characters
 import utilities
 import items
+from characters import Character
 
 def characterCreation():
   
@@ -56,6 +57,18 @@ def characterCreation():
       playerCharacter = characters.Player(name, species.lower(), archetype.lower())
       return(playerCharacter)
 
+def lobby(player):
+  while True:
+    print('What would you like to do?')
+    choice=input('1. Shop\n 2. Fight\n')
+    if choice.upper() == '1' or choice == 'shop'.upper():
+      shop(player)
+    elif choice.upper() == '2' or choice == 'fight'.upper():
+      battle(player)
+    else:
+      print('Say again?')
+      continue
+    
 def shop(player):
     print('Welcome to the shop.')
     
@@ -76,6 +89,7 @@ def shop(player):
           shopInventory[j]=1
       #shop will actually be a character since we can use the existing inventory variable and remove item functions in that class.
       shopKeep=characters.Player('Larry','orc','mage',5000,900,0,shopInventory)
+      affirmitives=['1', 'YES']
 
       def pcPurchase():
         while True:
@@ -83,28 +97,39 @@ def shop(player):
           inventoryList=list(shopKeep.inventory.keys())
           # print in a readable manner.
           for index, item in enumerate(inventoryList):
-            print(f"{index + 1}. {item.name}")
+            print(f"{index + 1}. {item.cost}gp  {item.name}")
           #Test to ensure player has a valid selciton.
           try:
-            item = input("What would you like to buy? ")
+            item = input("What would you like to buy?\n")
             item = inventoryList[int(item)-1]
-            print(f'My {item.name}?')
-                  #add in an affirming dialog tree
-            if player.gold - item.cost < 0:
-              print('You dont have the money.')
-              break
-            else:
-              player.changeGold(-item.cost)
-              shopKeep.removeItem(item, 1)
-              player.addItem(item, 1)
-              print(f'You bought the {item.name}')
-              break
+            print(f'A {item.name} for {item.cost}gp?')
+            validate=input('1. Yes\n2. No\n')
+            if validate.upper() in affirmitives:
+              if player.gold - item.cost < 0:
+                print('You dont have the money.')
+              else:
+                player.changeGold(-item.cost)
+                shopKeep.removeItem(item, 1)
+                player.addItem(item, 1)
+                print(f'You bought the {item.name} for {item.cost}gp')
+            break
           except:
             print('Doesnt sound right.')
             break
 
       def pcSell():
         while True:
+          #Unequip weapon when going into store.
+          try:
+            playerWeapon=player.weapon
+            player.unequipWeapon()
+          except:
+            pass
+          try:
+            playerArmor=player.armor
+            player.unequipArmor()
+          except:
+              pass
           #Test if player has anything to sell. Exit if they dont.
           if len(player.inventory) < 1:
             print('You have nothing to sell.')
@@ -113,40 +138,78 @@ def shop(player):
             #Display items
             print('You have:')
             #convert the item names to a list which is ordered and wont change.
+
             inventoryList=list(player.inventory.keys())
             # print in a readable manner.
             for index, item in enumerate(inventoryList):
-              print(f"{index + 1}. {item.name}")
+              print(f"{index + 1}. {item.cost}gp  {item.name}")
             #Test to ensure player has a valid selciton.
             try:
-              item= input("What would you like to sell? ")
+              print(f'I have {shopKeep.gold}gp.')
+              item= input("What would you like to sell?\n")
               item=inventoryList[int(item)-1]
-              print(f'Your {item.name}?')
-                    #add in an affirming dialog tree
-              if shopKeep.gold - item.cost < 0:
-                print('I dont have the money')
-              else:
-                shopKeep.changeGold(item.cost)
-                player.removeItem(item, 1)
-                shopKeep.addItem(item, 1)
-                print(f'You sold the {item.name}')
+              print(f'Your {item.name} for {item.cost}gp?')
+              validate=input('1. Yes\n2. No\n')
+              if validate.upper() in affirmitives:
+                if shopKeep.gold - item.cost < 0:
+                  print('I dont have the money.')
+                else:
+                  shopKeep.changeGold(item.cost)
+                  player.removeItem(item, 1)
+                  shopKeep.addItem(item, 1)
+                  print(f'You sold the {item.name} for {item.cost}gp.')
+                  #If the player didn't sell their weapon, we want to auto-equip it.
+                  if item.name != playerWeapon.name:
+                    player.setWeapon(playerWeapon)
+                  elif item in playerArmor:
+                    player.armor=[piece for piece in playerArmor if piece != item]
+                  else:
+                    for piece in playerArmor:
+                      player.equipArmor(piece)
+
               break
             except:
               print('Doesnt sound right.')
               break
-
-      print('Would you like to \n1. buy \n2. sell or \n3. exit?')
+      print(f'You have {player.gold}gp.')
+      print('Would you like to: \n1. Buy \n2. Sell \n3. Exit')
       decision=input('')
       if decision == '1' or decision.upper() == 'buy'.upper():
         pcPurchase()
       elif decision == '2' or decision.upper() == 'sell'.upper():
         pcSell()
-      #add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
       elif decision == '3' or decision.upper() == 'exit'.upper():
         break
       else:
         print('Speak up lad!')
         continue
+
+
+#Battle
+#Pick attack.
+#Add bonuses to users attack.
+#Deplete majika.
+#See if attack hits.
+#if so, add any bonuses to damage.
+#subtract from targets health
+
+def battle(player, enemy=characters.generateCharacter(name="Enemy")):
+  #roll initiative to see who goes first
+  pInt= player.agility+utilities.dieRoll(1,20)
+  eInt= enemy.agility+utilities.dieRoll(1,20)
+  while player.health > 0 and enemy.health > 0:
+    if pInt > eInt:
+        #If PC is the attacker, then they choose what they want to do. Drink potion, basic attack or other attack.
+      preAttack(player)
+      attackRound(player, enemy)
+      attackRound(enemy, player)
+    else:
+      attackRound(enemy,player)
+      preAttack(player)
+      attackRound(player,enemy)
+  return
+
+
 
 def attackRound(attacker, defender):
   '''#We first determine if the atttacker is lucky, if so, they get a bonus to their attack roll.
@@ -191,6 +254,24 @@ def attackRound(attacker, defender):
   else:
     print('miss')
 
+def preAttack(player):
+  while True:
+    choice = input("Do you \n1. Attack\n2. Drink Potion\n")
+    if choice== "2":
+      PCPotions = [item for item in player.inventory if item.itemType=="potion"]
+      print("Which potion?")
+      for index, potion in enumerate(PCPotions):
+        print(f"{index+1}. {potion.name}\n")
+      choice = input().upper()
+      #use a try statement for validation of player choice as opposed to a series of if statements.
+      try:
+        player.consume(PCPotions[int(choice)-1])
+        break
+      except:
+        print("Not a valid choice")
+        continue
+    break
+          
 #def modifyCharacter():
 
 #def die():

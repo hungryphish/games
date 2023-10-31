@@ -92,7 +92,7 @@ class Character:
   
   #add a weapon
   #Provides a default weapon
-  def setWeapon(self, weapon=items.Weapon('Stick',[0,0,1],'blunt',1,(1,6))):
+  def setWeapon(self, weapon=items.Weapon('fist',[0,0,1],'blunt',1,(1,6))):
     self.weapon = weapon
     #add agility modifier to attack
     self.attack = [stat + self.agility for stat in self.weapon.baseAttack]
@@ -102,8 +102,12 @@ class Character:
   def getTotalAR(armor):
     totalAR=[0,0,0]
     for piece in armor:
-      for index, stat in enumerate(piece.AR):
-        totalAR[index]+=totalAR[index]+stat
+      #this is here so that if nothing is in armor, than it will return AR of 0
+      try:
+        for index, stat in enumerate(piece.AR):
+          totalAR[index]+=totalAR[index]+stat
+      except:
+        pass
     return(totalAR)
   
   #add armor
@@ -132,23 +136,59 @@ class Player(Character):
   def changeLevel(self, level):
     self.level+=level
     
-  def addItem(self, item, qty):
-    if item in self.inventory:
-      self.inventory[item] += qty
-    else:
-      self.inventory[item] = qty
+  def addItem(self, item, qty=1):
+    #ignore default fist weapon so that it doesnt appear in inventory.
+    if item.name != 'fist':
+      if item in self.inventory:
+        self.inventory[item] += qty
+      else:
+        self.inventory[item] = qty
     
-  def removeItem(self, item, qty):
+  def removeItem(self, item, qty=1):
     self.inventory[item] -= qty
     if self.inventory[item] <= 0:
       del self.inventory[item]
+
+  #like when using a potion.
+  def consume(self, item):
+    self.changeStat(item.stat,item.amount)
+    self.removeItem(item)
 
   def swapWeapons(self, weapon):
     self.addItem(self.weapon,1)
     self.setWeapon(weapon)
     self.removeItem(weapon, 1)
+
+  def unequipWeapon(self):
+    self.addItem(self.weapon,1)
+    self.setWeapon()
     
-#add armor. Probably means implementing slots.
+  def unequipArmor(self, armorPiece=None):
+    #default setting. Will unequip all armor.
+    if armorPiece == None:
+      for piece in self.armor:
+        #add the items to your inventory
+        self.addItem(piece)
+        self.armor=[]
+    else:
+      self.addItem(armorPiece)
+      self.armor=[piece for piece in self.armor if piece != armorPiece]
+    self.setArmor(self.armor)
+  
+  def equipArmor(self, armorPiece):
+    #bool to test if the slot is already occupied by another piece of armor.
+    occ=False
+    for piece in self.armor:
+      if piece.slot == armorPiece.slot:
+        occ=True
+        self.unequipArmor(piece)
+        self.armor.append(armorPiece)
+    if occ == False:
+      self.armor.append(armorPiece)
+    #necessary to update AR and block stats.
+    self.setArmor(self.armor)
+    #There to take item out of inv.
+    self.removeItem(armorPiece)
 
 
 #initialize species

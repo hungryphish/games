@@ -1,4 +1,3 @@
-
 import actions
 import characters
 import items
@@ -10,15 +9,13 @@ To Do:
 Implement loot
 Implement XP gain
 Implement Levels
-Sell portion of the store needs work, currently broken.
-Also need to display and choose inventory better.
 Character creation can be expanded on to include stats.
+redo stat system. Maybe just make it DND?
 add inventory mgmt
-add different attacks
+add different attacks1
 Balance game
 save feature
-add a 'holding area' where a user can choose to upgrade stats, manage equipment or choose to fight.
-shop loop needs debugging
+show stats for characters
 '''
 #Below will take the user to the character creation screen.
 # playerCharacter=actions.characterCreation()
@@ -30,14 +27,15 @@ shop loop needs debugging
 # print(playerCharacter.block)
 
 
-buck = characters.Player('Buck','bird person', 'mage')
-buck.setWeapon(items.generateWeapon())
-print(buck.weapon.name)
-buck.setArmor(items.getAllArmor())
-print(buck.weapon.name)
-buck.changeGold(1000)
+# buck = characters.Player('Buck','bird person', 'mage')
+# buck.setWeapon(items.generateWeapon())
+# buck.setArmor(items.getAllArmor())
+# actions.battle(buck)
+# piece=items.generateArmorPiece()
 
-actions.shop(buck)
+# buck.changeGold(1000)
+
+# actions.shop(buck)
 # # sparrow = characters.Character('Sparrow','bird person','mage')
 # # sparrow.setArmor(items.getAllArmor())
 # # sparrow.setWeapon(items.generateWeapon())
@@ -66,7 +64,11 @@ actions.shop(buck)
 
 # #below is just for testing
 # ls=[]
+
+
 # for n in range(50):
 #     ls.append(battle(buck,sparrow))
 # print(ls)
 
+pc = actions.characterCreation()
+actions.lobby(pc)
